@@ -1,0 +1,1070 @@
+swagger: "2.0"
+info:
+  description: "This is a sample API Documentation by Malama Kangwa."
+  version: "1.0.0"
+  title: "Szi LMS"
+  termsOfService: "#"
+  contact:
+    email: "Malama.Kangwa@szi.gov.zm"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:44304"
+basePath: "/api/v1"
+tags:
+- name: "user"
+  description: "Users details"
+- name: "course"
+  description: "Course details"
+- name: "section"
+  description: "Term period for the course"
+- name: "assignment"
+  description: "Assignment given to users takeing a course."
+- name: "enrollment"
+  description: "Details of users enrolled to a section"
+- name: "submission"
+  description: "Details of users's submissions to assignments"
+schemes:
+- "https"
+- "http"
+
+
+paths:
+  #USERS
+  /users:
+    get:
+      tags:
+      - "user"
+      summary: "Returns complete list of users"
+      description: "Lists every user in the system"
+      operationId: "GetUsers"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resource successfully created"
+        "400":
+          description: "Invalid status value"
+    post:
+      tags:
+      - "user"
+      summary: "Add a new user to the system"
+      description: ""
+      operationId: "CreateUser"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourse created successfully"
+        "405":
+          description: "Invalid input"
+  /users/collection:
+    post:
+      tags:
+      - "user"
+      summary: "Add a list of new users to the system"
+      description: ""
+      operationId: "CreateUserCollection"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourses created successfully"
+        "405":
+          description: "Invalid input"
+  /users/collection/{userId}:
+    get:
+      tags:
+      - "user"
+      summary: "Shows details of each user in a defined list"
+      description: ""
+      operationId: "GetUserCollection"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "Invalid input"
+  /users/{userId}:
+    get:
+      tags:
+      - "user"
+      summary: "Find user by ID"
+      description: "Returns a single user"
+      operationId: "GetOneUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "User not found"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "Updates exisiting user's details."
+      operationId: "UpdateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "exisiting user's Id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+    delete:
+      tags:
+      - "user"
+      summary: "Deletes a user"
+      description: ""
+      operationId: "DeleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "User not found"
+  
+  #COURSES
+  /courses:
+    get:
+      tags:
+      - "course"
+      summary: "Returns complete list of courses"
+      description: "Lists every course in the system"
+      operationId: "GetCourses"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid status value"
+    post:
+      tags:
+      - "course"
+      summary: "Add a new course to the system"
+      description: ""
+      operationId: "CreateCourse"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourse created successfully"
+        "405":
+          description: "Invalid input"
+  /courses/collection:
+    post:
+      tags:
+      - "course"
+      summary: "Add a list of new courses to the system"
+      description: ""
+      operationId: "CreateCourseCollection"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourses created successfully"
+        "405":
+          description: "Invalid input"
+  /courses/collection/{courseId}:
+    get:
+      tags:
+      - "course"
+      summary: "Shows details of each course in a defined list"
+      description: ""
+      operationId: "GetCourseCollection"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "Invalid input"
+  /courses/{courseId}:
+    get:
+      tags:
+      - "course"
+      summary: "Find course by ID"
+      description: "Returns a single course"
+      operationId: "GetCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Course"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "course not found"
+    put:
+      tags:
+      - "course"
+      summary: "Updated course"
+      description: "Updates exisiting course's details."
+      operationId: "UpdateCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "exisiting course's Id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated course object"
+        required: true
+        schema:
+          $ref: "#/definitions/Course"
+      responses:
+        "400":
+          description: "Invalid course supplied"
+        "404":
+          description: "Course not found"
+    delete:
+      tags:
+      - "course"
+      summary: "Deletes a course"
+      description: ""
+      operationId: "DeleteCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Course not found"
+  
+  #SECTIONS
+  /courses/{courseId}/sections:
+    get:
+      tags:
+      - "section"
+      summary: "list every section related to a course"
+      description: "Returns a every secion for specific course"
+      operationId: "GetSectionsForCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course that sections belong to"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Section"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "course not found"
+    post:
+      tags:
+      - "section"
+      summary: "Add a new section to a course"
+      description: ""
+      operationId: "CreateSectionForCourse"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "courseId"
+        description: "ID of course that sections belong to"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Section"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourse created successfully"
+        "405":
+          description: "Invalid input"
+  /courses/{courseId}/sections/{sectionId}:
+    get:
+      tags:
+      - "section"
+      summary: "list specification section belongs to course"
+      description: "Returns a secion for specific Id"
+      operationId: "GetSectionForCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course that sections belong to"
+        required: true
+        type: "string"
+      - name: "sectionId"
+        in: "path"
+        description: "ID of the specific section"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Section"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Section not found"
+    delete:
+      tags:
+      - "section"
+      summary: "Deletes a section"
+      description: ""
+      operationId: "DeleteSectionForCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course to be deleted"
+        required: true
+        type: "string"
+      - name: "sectionId"
+        in: "path"
+        description: "ID of course to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Section not found"
+  
+  #ASSIGNMENTS
+  /courses/{courseId}/assignments:
+    get:
+      tags:
+      - "assignment"
+      summary: "list every assignment related to a course"
+      description: "Returns a every assignment for specific course"
+      operationId: "GetAssignmentsForCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course the assignments belong to"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Assignment"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Assignments not found"
+    post:
+      tags:
+      - "assignment"
+      summary: "Add a new assignment to a course"
+      description: ""
+      operationId: "CreateAssignmentForCourse"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "courseId"
+        description: "ID of course that assignment will belong to"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Assignment"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourse created successfully"
+        "405":
+          description: "Invalid input"
+  /courses/{courseId}/assignments/{assignmentId}:
+    get:
+      tags:
+      - "assignment"
+      summary: "list specification assignment belonging to a course"
+      description: "Returns a assignment for specific Id"
+      operationId: "GetAssignmentForCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course that sections belong to"
+        required: true
+        type: "string"
+      - name: "assignmentId"
+        in: "path"
+        description: "ID of the specific assignment"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Assignment"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Assignment not found"
+    put:
+      tags:
+      - "assignment"
+      summary: "Updated assignment"
+      description: "Updates exisiting assignment's details."
+      operationId: "UpdateAssignment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "id of Course that the assignment belongs"
+        required: true
+        type: "string"
+      - name: "assignmentId"
+        in: "path"
+        description: "id of the assignment specified"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated assignment object"
+        required: true
+        schema:
+          $ref: "#/definitions/Assignment"
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "Assignment not found"
+    delete:
+      tags:
+      - "assignment"
+      summary: "Deletes an assignment"
+      description: ""
+      operationId: "DeleteAssignmentForCourse"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of assignment to be deleted"
+        required: true
+        type: "string"
+      - name: "assignmentId"
+        in: "path"
+        description: "ID of assignment to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Assignment not found"
+  /courses/{courseId}/assignments/collection:
+    post:
+      tags:
+      - "assignment"
+      summary: "Add a list of new assignments to the system"
+      description: ""
+      operationId: "CreateAssignmentsCollection"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        description: "ID of course that assignment belong to"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Assignment"    
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourses created successfully"
+        "405":
+          description: "Invalid input"
+  /courses/{courseId}/assignment/{assignmentId}/collection:
+    get:
+      tags:
+      - "assignment"
+      summary: "Shows details of each assignment in a defined list"
+      description: "Shows details of each assignment in a defined list"
+      operationId: "GetAssignmentCollection"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "courseId"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "assignmentId"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+        "405":
+          description: "Invalid input"
+  
+  
+  #ENROLLMENTS
+  /users/{userId}/enrollments:
+    get:
+      tags:
+      - "enrollment"
+      summary: "list a user's every enrollment"
+      description: "Returns a every enrollment for specific user"
+      operationId: "GetEnrollmentsForUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user enrollment"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Assignment"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Enrollments not found"
+    post:
+      tags:
+      - "enrollment"
+      summary: "Enrolls user to a section"
+      description: "Enrolls user to a section"
+      operationId: "CreateEnrollmentForUser"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "userId"
+        description: "ID of user enrolled"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Enrollment"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourse created successfully"
+        "405":
+          description: "Invalid input"
+  /users/{userId}/enrollments/{enrollmentId}:
+    get:
+      tags:
+      - "enrollment"
+      summary: "list a sepcific enrollments belonging to a user"
+      description: "Returns an enrollment based on Id"
+      operationId: "GetEnrollmentForUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user enrolled"
+        required: true
+        type: "string"
+      - name: "enrollmentId"
+        in: "path"
+        description: "ID of the specific enrollment"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Assignment"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Assignment not found"
+    put:
+      tags:
+      - "enrollment"
+      summary: "Updated enrollment"
+      description: "Updates exisiting enrollment's details."
+      operationId: "UpdateEnrollment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "id of user enrolled"
+        required: true
+        type: "string"
+      - name: "enrollmentId"
+        in: "path"
+        description: "id of the enrollment specified"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated enrollment object"
+        required: true
+        schema:
+          $ref: "#/definitions/Enrollment"
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "Enrollment not found"
+    delete:
+      tags:
+      - "enrollment"
+      summary: "Deletes an enrollment"
+      description: ""
+      operationId: "DeleteEnrollmentForUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of enrollment to be deleted"
+        required: true
+        type: "string"
+      - name: "enrollmentId"
+        in: "path"
+        description: "ID of enrollment to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Enrollment not found"
+  
+  #SUBMISSIONS
+  /users/{userId}/enrollments/{enrollmentId}/submissions:
+    get:
+      tags:
+      - "submission"
+      summary: "list a user's every submissions for an enrollment"
+      description: "Returns a user's every submissions for specific enrollment"
+      operationId: "GetSubmissionsForEnrollment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user enrolled"
+        required: true
+        type: "string"
+      - name: "enrollmentId"
+        in: "path"
+        description: "ID of user's enrollment"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Submission"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Submission not found"
+    post:
+      tags:
+      - "submission"
+      summary: "creates user's submission for an enrollment"
+      description: "Adds user's submission for an enrollment"
+      operationId: "CreateSubmissionForEnrollment"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "userId"
+        description: "ID of user enrolled"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "enrollmentId"
+        description: "ID of enrollment"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/Submission"
+      responses:
+        "200":
+          description: "successful operation"
+        "201":
+          description: "resourse created successfully"
+        "405":
+          description: "Invalid input"
+  /users/{userId}/enrollments/{enrollmentId}/submissions/{submissionId}:
+    get:
+      tags:
+      - "submission"
+      summary: "list submission belonging to a user for enrollment"
+      description: "list submission belonging to a user for enrollment"
+      operationId: "GetSubmissionForEnrollment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of user enrolled"
+        required: true
+        type: "string"
+      - name: "enrollmentId"
+        in: "path"
+        description: "ID of the specific enrollment"
+        required: true
+        type: "string"
+      - name: "submissionId"
+        in: "path"
+        description: "ID of the specific enrollment"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Submission"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Submission not found"
+    put:
+      tags:
+      - "submission"
+      summary: "Updated submission"
+      description: "Updates exisiting submission's details."
+      operationId: "UpdateSubmission"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "id of user enrolled"
+        required: true
+        type: "string"
+      - name: "enrollmentId"
+        in: "path"
+        description: "id of the enrollment specified"
+        required: true
+        type: "string"
+      - name: "submissionId"
+        in: "path"
+        description: "id of the specific submission"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated submission object"
+        required: true
+        schema:
+          $ref: "#/definitions/Submission"
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "Enrollment not found"
+    delete:
+      tags:
+      - "submission"
+      summary: "Deletes an submission"
+      description: "Deletes an submission"
+      operationId: "DeleteSubmissionForEnrollment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "path"
+        description: "ID of enrollmeed user"
+        required: true
+        type: "string"
+      - name: "enrollmentId"
+        in: "path"
+        description: "ID of enrollment submission belongs to"
+        required: true
+        type: "string"
+      - name: "submissionId"
+        in: "path"
+        description: "id of the specific submission"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Enrollment not found"
+
+#SUBMISSIONS
+definitions:
+  User:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+      Fname:
+        type: "string"
+      Lname:
+        type: "string"
+      Email:
+        type: "string"
+      Password:
+        type: "string"
+    xml:
+      name: "User"
+      
+  Course:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+      Course_Name:
+        type: "string"
+      Course_Description:
+        type: "string"
+    xml:
+      name: "Course"
+  
+  Section:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+      CourseId:
+        type: "integer"
+    xml:
+      name: "Section"
+      
+  Assignment:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+      Assignment_Name:
+        type: "string"
+      Assignment_Description:
+        type: "string"
+      CourseId:
+        type: "string"
+    xml:
+      name: "Assignment"
+      
+  Enrollment:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+      SectionId:
+        type: "string"
+      Role_Id:
+        type: "integer"
+        description: "Role given to a user in relation to a spcific section"
+        enum:
+        - 0
+        - 1
+        - 2
+    xml:
+      name: "Enrollment"
+      
+  Submission:
+    type: "object"
+    properties:
+      Id:
+        type: "string"
+      AssignmentId:
+        type: "string"      
+      EnrollmentId:
+        type: "string"
+      Score:
+        type: "integer"
+        description: "grade given to user for each assignement"
+    xml:
+      name: "Submission"
