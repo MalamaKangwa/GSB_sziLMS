@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using GSB_sziLMS.Extensions;
+using NLog;
+using System.IO;
 
 namespace GSB_sziLMS
 {
@@ -17,6 +20,8 @@ namespace GSB_sziLMS
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+
             Configuration = configuration;
         }
 
@@ -25,6 +30,7 @@ namespace GSB_sziLMS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.ConfigureLoggerService();
             services.AddControllers();
         }
 
