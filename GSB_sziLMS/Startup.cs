@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using GSB_sziLMS.Extensions;
 using NLog;
 using System.IO;
@@ -31,6 +24,9 @@ namespace GSB_sziLMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureLoggerService();
+            services.AddControllers();
+            services.ConfigureRepositoryManager();
+            services.ConfigureSqlContext(Configuration);
             services.AddControllers();
         }
 
