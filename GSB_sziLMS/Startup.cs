@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using GSB_sziLMS.Extensions;
 using NLog;
 using System.IO;
+using AutoMapper;
 
 namespace GSB_sziLMS
 {
@@ -24,9 +25,10 @@ namespace GSB_sziLMS
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureLoggerService();
-            services.AddControllers();
-            services.ConfigureRepositoryManager();
             services.ConfigureSqlContext(Configuration);
+            services.ConfigureRepositoryManager();
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
         }
 
