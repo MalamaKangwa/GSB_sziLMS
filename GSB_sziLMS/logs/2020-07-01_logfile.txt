@@ -184,3 +184,4 @@ Login failed for user 'LAPTOP-48GLG9QU\Malama.Kangwa'.
    at GSB_sziLMS.Controllers.CoursesController.GetCourses() in C:\Users\Malama.Kangwa\source\repos\GSB_sziLMS\GSB_sziLMS\Controllers\CourseController.cs:line 32
 ClientConnectionId:1eddb2b8-7eb6-46a3-b559-ce7f5f94fb0a
 Error Number:4060,State:1,Class:11
+2020-07-01 18:28:02.7680 INFO Course with id: 7ead0595-5f85-4134-b687-b24e3436fd37 doesn't exist in the database.
