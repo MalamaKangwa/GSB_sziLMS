@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace Entities.DataTransferObjectsForCreation
+{
+    public class SubmissionForCreationDto
+    {
+        public Guid EnrollmentId { get; set; }
+
+        [Required(ErrorMessage = "Score is a required field.")]
+        [MaxLength(60, ErrorMessage = "Maximum length for the Score is 60 characters.")]
+
+        public string Score { get; set; }
+    }
+}

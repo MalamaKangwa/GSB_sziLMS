@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Entities.DataTransferObjects;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -61,5 +62,56 @@ namespace GSB_sziLMS.Controllers
             var sectionsDto = _mapper.Map<SectionDto>(sections);
             return Ok(sectionsDto);
         }
+
+
+        [HttpPost]
+        public IActionResult CreateSectionForCourse(Guid courseId, [FromBody]Section section)
+        {
+            if (section == null)
+            {
+                _logger.LogError("SectionDto object sent from client is null.");
+                return BadRequest("SectionDto object is null");
+            }
+
+            var course = _repository.Course.GetCourse(courseId, trackChanges: false);
+            if (course == null)
+            {
+                _logger.LogInfo($"Course with id: {courseId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            //var sectionEntity = _mapper.Map<Section>(section);
+            _repository.Section.CreateSectionForCourse(courseId, section);
+            _repository.Save();
+
+            var sectionToReturn = _mapper.Map<SectionDto>(section);
+            return CreatedAtRoute("GetSectionForCourse", new
+            { courseId, id = sectionToReturn.Id }, sectionToReturn);
+
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteSectionForCourse(Guid courseId, Guid id)
+        {
+            var course = _repository.Course.GetCourse(courseId, trackChanges: false);
+            if (course == null)
+            {
+                _logger.LogInfo($"Course with id: {courseId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var sectionForCourse = _repository.Section.GetSection(courseId, id, trackChanges: false);
+            if (sectionForCourse == null)
+            {
+                _logger.LogInfo($"Section with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            _repository.Section.DeleteSection(sectionForCourse);
+            _repository.Save();
+
+            return NoContent();
+        }
+
     }
 }
