@@ -13,6 +13,7 @@ namespace GSB_sziLMS.Controllers
 {
     [Route("api/v1/courses/{courseId}/assignments")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
 
     public class AssignmentsController : ControllerBase
     {

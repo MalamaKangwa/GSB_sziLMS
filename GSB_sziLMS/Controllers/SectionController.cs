@@ -11,6 +11,7 @@ namespace GSB_sziLMS.Controllers
 {
     [Route("api/v1/courses/{courseId}/sections")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class SectionsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

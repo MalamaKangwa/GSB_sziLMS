@@ -13,6 +13,7 @@ namespace GSB_sziLMS.Controllers
 {
     [Route("api/v1/users/{userId}/enrollments")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class EnrollmentsController : ControllerBase
     {
         private readonly IRepositoryManager _repository;

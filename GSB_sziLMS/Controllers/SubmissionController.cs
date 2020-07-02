@@ -16,6 +16,7 @@ namespace GSB_sziLMS.Controllers
 {
     [Route("api/v1/users/{userId}/enrollments/{enrollmentId}/submissions")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
 
     public class SubmissionsController : ControllerBase
     {

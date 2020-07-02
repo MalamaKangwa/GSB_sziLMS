@@ -8,6 +8,7 @@ using NLog;
 using System.IO;
 using AutoMapper;
 using Contracts;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace GSB_sziLMS
 {
@@ -35,6 +36,7 @@ namespace GSB_sziLMS
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+            services.ConfigureSwagger();
             services.AddControllers();
         }
 
@@ -45,10 +47,26 @@ namespace GSB_sziLMS
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "GSB Szi LMS");            
+            });
 
             app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseCors("CorsPolicy");
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
 
             app.UseRouting();
 

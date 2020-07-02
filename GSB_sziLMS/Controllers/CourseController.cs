@@ -3,6 +3,7 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.DataTransferObjectsForCreation;
 using Entities.DataTransferObjectsForUpdate;
+using Entities.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,6 +13,7 @@ namespace GSB_sziLMS.Controllers
 {
     [Route("api/v1/courses")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
 
     public class CoursesController : ControllerBase
     {
@@ -57,28 +59,7 @@ namespace GSB_sziLMS.Controllers
         }
 
 
-        [HttpGet("collection/({ids})", Name = "CourseCollection")]
-        public IActionResult GetCourseCollection([ModelBinder(BinderType =
-            typeof(ArrayModelBinders))]IEnumerable<Guid> ids)
-        {
-            if (ids == null)
-            {
-                _logger.LogError("Parameter ids is null");
-                return BadRequest("Parameter ids is null");
-            }
-
-            var courseEntities = _repository.Course.GetCoursesById(ids, trackChanges: false);
-
-            if (ids.Count() != courseEntities.Count())
-            {
-                _logger.LogError("Some ids are not valid in a collection");
-                return NotFound();
-            }
-
-            var coursesToReturn = _mapper.Map<IEnumerable<CourseDto>>(courseEntities);
-            return Ok(coursesToReturn);
-        }
-
+        
         [HttpPost]
         public IActionResult CreateCourse([FromBody]CourseForCreationDto course)
         {
@@ -100,30 +81,7 @@ namespace GSB_sziLMS.Controllers
         }
 
 
-        [HttpPost("collection")]
-        public IActionResult CreateCourseCollection([FromBody] IEnumerable<CourseForCreationDto> courseCollection)
-        {
-            if (courseCollection == null)
-            {
-                _logger.LogError("Course collection sent from client is null.");
-                return BadRequest("Course collection is null");
-            }
-
-            var courseEntities = _mapper.Map<IEnumerable<Course>>(courseCollection);
-            foreach (var course in courseEntities)
-            {
-                _repository.Course.CreateCourse(course);
-            }
-
-            _repository.Save();
-
-            var courseCollectionToReturn = _mapper.Map<IEnumerable<CourseDto>>(courseEntities);
-            var ids = string.Join(",", courseCollectionToReturn.Select(c => c.Id));
-
-            return CreatedAtRoute("CourseCollection", new { ids }, courseCollectionToReturn);
-        }
-
-
+        
         [HttpPut("{id}")]
         public IActionResult UpdateCourse(Guid id, [FromBody] CourseForUpdateDto course)
         {
